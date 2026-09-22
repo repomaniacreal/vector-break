@@ -362,11 +362,11 @@
       </div>
     </div>
 
-    <!-- <div class="powerup-row">
+    <div class="powerup-row">
       <div class="pill" id="pillWide">WIDE: OFF</div>
       <div class="pill" id="pillMulti">MULTI: 1X</div>
       <div class="pill" id="pillLaser">LASER: OFF</div>
-    </div> -->
+    </div>
 
     <div class="sector-row">
       <div class="sector">SECTOR <b id="sectorVal">01-A</b></div>
@@ -687,10 +687,36 @@
 
   // ---------- power-ups ----------
   function maybeDropPowerup(x,y){
-    if(Math.random() > 0.14) return;
+    // BONUS PARTY: power-up dibuat jauh lebih sering dan bisa muncul beruntun.
+    // Round 1 = 45%, naik 5% per round, maksimum 90%.
+    var dropChance = Math.min(0.90, 0.45 + (round-1)*0.05);
+    if(Math.random() > dropChance) return;
+
+    // Semakin tinggi round, MULTI dan LASER semakin dominan.
+    var progress = Math.min(1, (round-1)/8);
     var roll = Math.random();
-    var type = roll < 0.4 ? 'wide' : (roll < 0.75 ? 'multi' : 'laser');
-    powerups.push({ x:x, y:y, vy:70, type:type, r:7 });
+    var wideChance = 0.34 - progress*0.08;
+    var multiChance = 0.38 + progress*0.04;
+    var type = roll < wideChance ? 'wide' :
+               (roll < wideChance + multiChance ? 'multi' : 'laser');
+
+    powerups.push({ x:x, y:y, vy:78 + round*2, type:type, r:7 });
+
+    // BONUS BURST: sesekali satu brick menjatuhkan bonus tambahan,
+    // supaya layar terasa lebih meriah terutama di round tinggi.
+    var burstChance = Math.min(0.38, 0.10 + round*0.025);
+    if(Math.random() < burstChance){
+      var types = ['wide','multi','laser'];
+      var bonusType = types[Math.floor(Math.random()*types.length)];
+      powerups.push({
+        x:clamp(x + (Math.random()-0.5)*34, 10, LW-10),
+        y:y + 3,
+        vy:82 + round*2,
+        type:bonusType,
+        r:7
+      });
+      spark(x,y, bonusType==='wide'?'#00F3FF':(bonusType==='multi'?'#FF007F':'#39FF14'));
+    }
   }
 
   function applyPowerup(type){
