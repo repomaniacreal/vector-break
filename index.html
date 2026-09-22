@@ -673,12 +673,12 @@
         '<svg viewBox="0 0 24 24" class="'+(filled?'filled':'')+'"><path d="M12 21s-7.2-4.6-10-9C.3 8.6 2 4.7 5.6 4.1 8 3.7 10 5 12 7.4 14 5 16 3.7 18.4 4.1 22 4.7 23.7 8.6 22 12c-2.8 4.4-10 9-10 9Z"/></svg>');
     }
 
-    pillWide.textContent = 'WIDE: ' + (wideTimer>0 ? 'ON' : 'OFF');
+    // pillWide.textContent = 'WIDE: ' + (wideTimer>0 ? 'ON' : 'OFF');
     pillWide.className = 'pill' + (wideTimer>0 ? ' on-wide' : '');
     var ballCount = Math.max(1, balls.length);
-    pillMulti.textContent = 'MULTI: ' + ballCount + 'X';
+    // pillMulti.textContent = 'MULTI: ' + ballCount + 'X';
     pillMulti.className = 'pill' + (ballCount>1 ? ' on-multi' : '');
-    pillLaser.textContent = 'LASER: ' + (laserTimer>0 ? 'ON' : 'OFF');
+    // pillLaser.textContent = 'LASER: ' + (laserTimer>0 ? 'ON' : 'OFF');
     pillLaser.className = 'pill' + (laserTimer>0 ? ' on-laser' : '');
 
     btnFire.classList.toggle('laser-ready', laserTimer>0);
